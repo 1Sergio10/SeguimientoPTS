@@ -53,7 +53,7 @@ builder.Services.AddCors(opt =>
         p.SetIsOriginAllowed(origin =>
         {
             var uri = new Uri(origin);
-            return uri.Host == "localhost";
+            return uri.Host == "localhost" || uri.Host.EndsWith(".onrender.com");
         })
         .AllowAnyHeader()
         .AllowAnyMethod());
