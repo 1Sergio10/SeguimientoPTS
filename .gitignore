@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/**/*.log
 
 # Node
 /node_modules
@@ -31,6 +32,8 @@ yarn-error.log
 
 # Miscellaneous
 /.angular/cache
+.angular/
+.claude/
 .sass-cache/
 /connect.lock
 /coverage
@@ -38,6 +41,15 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
+
+# .NET backend build artifacts
+PTS.API/bin/
+PTS.API/obj/
+
+# Environment files
+.env
+.env.*
+!.env.example
 
 # System files
 .DS_Store

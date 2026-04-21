@@ -1,59 +1,120 @@
-# PtsTrack
+# PTS Track
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
+Sistema de seguimiento de proyectos academicos con frontend en Angular y backend en ASP.NET Core.
 
-## Development server
+## Arquitectura
 
-To start a local development server, run:
+- Frontend: Angular 21 (SPA)
+- Backend: ASP.NET Core + EF Core + SQL Server
+- Autenticacion: JWT Bearer
+- Deployment: Render (servicio web para API + sitio estatico para frontend)
 
-```bash
-ng serve
+## Estructura del repositorio
+
+```text
+pts-track/
+|- src/                          # Frontend Angular
+|  |- app/
+|  |  |- core/                   # Servicios base, modelos, interceptores, guards
+|  |  |- features/               # Modulos por dominio (auth, dashboard, grupos, etc.)
+|  |  |- layout/                 # Layout principal
+|  |- environments/
+|- public/                       # Assets estaticos frontend
+|- PTS.API/                      # Backend ASP.NET Core
+|  |- Controllers/
+|  |- Data/
+|  |- DTOs/
+|  |- Migrations/
+|  |- Models/
+|  |- Services/
+|  |- Program.cs
+|  |- appsettings.json
+|- docs/                         # Documentacion de estructura y convenciones
+|- angular.json
+|- package.json
+|- render.yaml
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Requisitos
 
-## Code scaffolding
+- Node.js 20+
+- npm 10+
+- .NET SDK 10
+- SQL Server (local o remoto)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Configuracion local
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### 1) Frontend
 
 ```bash
-ng build
+npm install
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 2) Backend
 
-## Running unit tests
+Configura la cadena de conexion y JWT en [PTS.API/appsettings.json](PTS.API/appsettings.json).
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Valores clave:
+
+- ConnectionStrings:Default
+- Jwt:Key
+- Jwt:Issuer
+- Jwt:Audience
+
+## Ejecutar en desarrollo
+
+### Backend
 
 ```bash
-ng test
+dotnet run --project PTS.API/PTS.API.csproj --urls http://localhost:5000
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Frontend
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Aplicacion en: http://localhost:4200
 
-## Additional Resources
+## Credenciales de desarrollo
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+En entorno Development, la API siembra usuarios demo cuando la tabla de usuarios esta vacia:
+
+- profesor@pts.local / 12345678
+- estudiante@pts.local / 12345678
+
+Nota: en Production no se ejecuta esta siembra automatica.
+
+## Scripts utiles
+
+- `npm start`: levanta Angular en modo desarrollo
+- `npm run build`: build de frontend
+- `npm test`: pruebas unitarias frontend
+
+## Convenciones de organizacion
+
+- Frontend por dominio funcional dentro de `src/app/features`.
+- Logica transversal en `src/app/core`.
+- Backend por capas simples: `Controllers`, `Services`, `Data`, `Models`, `DTOs`.
+- Archivos generados (`bin`, `obj`, `dist`, caches) no se versionan.
+
+Mas detalle en [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md).
+
+## Deploy (Render)
+
+Definido en [render.yaml](render.yaml):
+
+- `pts-api`: servicio Docker para ASP.NET Core
+- `pts-web`: sitio estatico para frontend Angular
+
+Variables recomendadas en Render:
+
+- `JWT__KEY`
+- `JWT__ISSUER`
+- `JWT__AUDIENCE`
+- `ConnectionStrings__DefaultConnection`
+
+## Estado del repositorio
+
+Se recomienda mantener limpio el arbol de codigo fuente y evitar versionar artefactos de compilacion para facilitar revisiones y despliegues.
