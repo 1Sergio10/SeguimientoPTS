@@ -1,7 +1,7 @@
 services:
   - type: web
     name: pts-api
-    runtime: dotnet
+    env: dotnet
     rootDir: PTS.API
     plan: free
     buildCommand: dotnet restore && dotnet build -c Release
@@ -20,7 +20,7 @@ services:
 
   - type: web
     name: pts-web
-    runtime: static
+    env: static
     rootDir: .
     buildCommand: npm ci && npm run build
     staticPublishPath: dist/pts-track
