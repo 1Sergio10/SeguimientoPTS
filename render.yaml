@@ -14,7 +14,7 @@ services:
         value: PTS.API
       - key: JWT__AUDIENCE
         value: PTS.CLIENT
-      - key: ConnectionStrings__DefaultConnection
+      - key: ConnectionStrings__Default
         sync: false
 
   - type: web
