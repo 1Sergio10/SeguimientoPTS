@@ -1,11 +1,11 @@
 services:
   - type: web
     name: pts-api
-    env: dotnet
-    rootDir: PTS.API
+    runtime: docker
     plan: free
-    buildCommand: dotnet restore && dotnet build -c Release
-    startCommand: dotnet run --configuration Release --urls http://0.0.0.0:$PORT
+    dockerfilePath: ./PTS.API/Dockerfile
+    dockerContext: ./PTS.API
+    dockerCommand: sh -c "dotnet PTS.API.dll --urls http://0.0.0.0:$PORT"
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
@@ -20,7 +20,7 @@ services:
 
   - type: web
     name: pts-web
-    env: static
+    runtime: static
     rootDir: .
     buildCommand: npm ci && npm run build
     staticPublishPath: dist/pts-track
