@@ -5,7 +5,6 @@ services:
     plan: free
     dockerfilePath: ./PTS.API/Dockerfile
     dockerContext: ./PTS.API
-    dockerCommand: sh -c "dotnet PTS.API.dll --urls http://0.0.0.0:$PORT"
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
