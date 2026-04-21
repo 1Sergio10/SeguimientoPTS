@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -89,8 +90,14 @@ export class LoginComponent {
       next: () => {
         this.router.navigate(['/dashboard']);
       },
-      error: () => {
-        this.error.set('Correo o contraseña incorrectos.');
+          error: (err: HttpErrorResponse) => {
+            if (err.status === 0) {
+              this.error.set('No se pudo conectar con el servidor. Verifica que la API esté encendida.');
+            } else if (err.status === 401) {
+              this.error.set('Correo o contraseña incorrectos.');
+            } else {
+              this.error.set('Ocurrió un error al intentar ingresar.');
+            }
         this.cargando.set(false);
       }
     });
