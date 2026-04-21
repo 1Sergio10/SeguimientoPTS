@@ -1,1 +1,128 @@
-/* You can add global styles to this file, and also import other style files */
+/* ── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Tokens ───────────────────────────────────────────────── */
+:root {
+  /* Colores base */
+  --accent:       #4F46E5;
+  --accent-dark:  #3730A3;
+  --accent-light: #EEF2FF;
+
+  /* Fondos */
+  --bg-page:      #F8F7F4;
+  --bg-sidebar:   #FFFFFF;
+  --bg-secondary: #F1F0EC;
+  --bg-card:      #FFFFFF;
+  --bg-hover:     #F1F0EC;
+
+  /* Texto */
+  --text-primary:   #1C1B19;
+  --text-secondary: #5C5B57;
+  --text-muted:     #9B9A95;
+
+  /* Bordes */
+  --border:       #E8E7E3;
+  --border-strong:#C8C7C2;
+
+  /* Estados */
+  --success-bg:  #EAF3DE;
+  --success-text:#27500A;
+  --warning-bg:  #FAEEDA;
+  --warning-text:#633806;
+  --danger-bg:   #FCEBEB;
+  --danger-text: #791F1F;
+  --info-bg:     #E6F1FB;
+  --info-text:   #0C447C;
+
+  /* Tipografía */
+  --font: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent:       #818CF8;
+    --accent-dark:  #6366F1;
+    --accent-light: #1E1B4B;
+    --bg-page:      #111110;
+    --bg-sidebar:   #18171A;
+    --bg-secondary: #1E1D1B;
+    --bg-card:      #1E1D1B;
+    --bg-hover:     #252422;
+    --text-primary:   #EDECE8;
+    --text-secondary: #A09F9A;
+    --text-muted:     #6B6A65;
+    --border:         #2E2D2B;
+    --border-strong:  #484743;
+  }
+}
+
+/* ── Reset ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* ── Tipografía utilitaria ────────────────────────────────── */
+h1 { font-size: 22px; font-weight: 700; }
+h2 { font-size: 18px; font-weight: 600; }
+h3 { font-size: 15px; font-weight: 600; }
+
+/* ── Badges de estado ─────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+.badge-backlog     { background: #F1EFE8; color: #5F5E5A; }
+.badge-en-progreso { background: var(--info-bg);    color: var(--info-text); }
+.badge-en-revision { background: var(--warning-bg); color: var(--warning-text); }
+.badge-completado  { background: var(--success-bg); color: var(--success-text); }
+.badge-al-dia      { background: var(--success-bg); color: var(--success-text); }
+.badge-en-riesgo   { background: var(--warning-bg); color: var(--warning-text); }
+.badge-retrasado   { background: var(--danger-bg);  color: var(--danger-text); }
+
+/* ── Página utilitaria ────────────────────────────────────── */
+.page { padding: 28px 32px; }
+.page-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.page-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+
+/* ── Botones ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; font-family: var(--font);
+  cursor: pointer; border: 1px solid var(--border);
+  background: var(--bg-card); color: var(--text-primary);
+  transition: background 0.15s, border-color 0.15s;
+  text-decoration: none;
+}
+.btn:hover { background: var(--bg-secondary); border-color: var(--border-strong); }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+
+/* ── Tarjeta ──────────────────────────────────────────────── */
+.card-base {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}

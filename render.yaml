@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: pts-api
+    runtime: dotnet
+    rootDir: PTS.API
+    plan: free
+    buildCommand: dotnet restore && dotnet build -c Release
+    startCommand: dotnet run --configuration Release --urls http://0.0.0.0:$PORT
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: JWT__KEY
+        sync: false
+      - key: JWT__ISSUER
+        value: PTS.API
+      - key: JWT__AUDIENCE
+        value: PTS.CLIENT
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+
+  - type: static
+    name: pts-web
+    rootDir: .
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist/pts-track
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
