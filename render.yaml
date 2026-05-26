@@ -14,6 +14,8 @@ services:
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:10000
       - key: JWT__KEY
         sync: false
       - key: JWT__ISSUER
