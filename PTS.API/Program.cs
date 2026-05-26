@@ -93,6 +93,18 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<PtsDbContext>();
     db.Database.Migrate();
+
+    if (!db.Usuarios.Any())
+    {
+        db.Usuarios.Add(new Usuario
+        {
+            Nombre = "Profesor",
+            Email = "profesor@pts.local",
+            Rol = Rol.PROFESOR,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345678")
+        });
+        db.SaveChanges();
+    }
 }
 
 if (app.Environment.IsDevelopment())
