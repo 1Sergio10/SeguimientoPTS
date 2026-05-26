@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,12 +16,12 @@ namespace PTS.API.Migrations
                 name: "Clases",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Codigo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Semestre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfesorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nombre = table.Column<string>(type: "text", nullable: false),
+                    Codigo = table.Column<string>(type: "text", nullable: false),
+                    Semestre = table.Column<string>(type: "text", nullable: false),
+                    ProfesorId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,10 +32,10 @@ namespace PTS.API.Migrations
                 name: "Grupos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClaseId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nombre = table.Column<string>(type: "text", nullable: false),
+                    ClaseId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,12 +52,12 @@ namespace PTS.API.Migrations
                 name: "Proyectos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GrupoId = table.Column<int>(type: "int", nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Titulo = table.Column<string>(type: "text", nullable: false),
+                    Descripcion = table.Column<string>(type: "text", nullable: false),
+                    GrupoId = table.Column<int>(type: "integer", nullable: false),
+                    Estado = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,13 +74,13 @@ namespace PTS.API.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<int>(type: "int", nullable: false),
-                    GrupoId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Nombre = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Rol = table.Column<int>(type: "integer", nullable: false),
+                    GrupoId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,14 +97,14 @@ namespace PTS.API.Migrations
                 name: "Sprints",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Numero = table.Column<int>(type: "int", nullable: false),
-                    ProyectoId = table.Column<int>(type: "int", nullable: false),
-                    Meta = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Numero = table.Column<int>(type: "integer", nullable: false),
+                    ProyectoId = table.Column<int>(type: "integer", nullable: false),
+                    Meta = table.Column<string>(type: "text", nullable: false),
                     FechaInicio = table.Column<DateOnly>(type: "date", nullable: false),
                     FechaFin = table.Column<DateOnly>(type: "date", nullable: false),
-                    Cerrado = table.Column<bool>(type: "bit", nullable: false)
+                    Cerrado = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,12 +121,12 @@ namespace PTS.API.Migrations
                 name: "GitHubRepos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RepoFullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProyectoId = table.Column<int>(type: "int", nullable: false),
-                    VinculadoPorId = table.Column<int>(type: "int", nullable: false),
-                    UltimaSincronizacion = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RepoFullName = table.Column<string>(type: "text", nullable: false),
+                    ProyectoId = table.Column<int>(type: "integer", nullable: false),
+                    VinculadoPorId = table.Column<int>(type: "integer", nullable: false),
+                    UltimaSincronizacion = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -148,15 +149,15 @@ namespace PTS.API.Migrations
                 name: "Tareas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SprintId = table.Column<int>(type: "int", nullable: false),
-                    CreadaPorId = table.Column<int>(type: "int", nullable: false),
-                    AsignadoAId = table.Column<int>(type: "int", nullable: true),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    Puntos = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Titulo = table.Column<string>(type: "text", nullable: false),
+                    Descripcion = table.Column<string>(type: "text", nullable: false),
+                    SprintId = table.Column<int>(type: "integer", nullable: false),
+                    CreadaPorId = table.Column<int>(type: "integer", nullable: false),
+                    AsignadoAId = table.Column<int>(type: "integer", nullable: true),
+                    Estado = table.Column<int>(type: "integer", nullable: false),
+                    Puntos = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,15 +186,15 @@ namespace PTS.API.Migrations
                 name: "GitHubCommits",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Sha = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Mensaje = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AutorGitHub = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaCommit = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RepoId = table.Column<int>(type: "int", nullable: false),
-                    TareaId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Sha = table.Column<string>(type: "text", nullable: false),
+                    Mensaje = table.Column<string>(type: "text", nullable: false),
+                    AutorGitHub = table.Column<string>(type: "text", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: false),
+                    FechaCommit = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RepoId = table.Column<int>(type: "integer", nullable: false),
+                    TareaId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,17 +216,17 @@ namespace PTS.API.Migrations
                 name: "GitHubPRs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NumeroPR = table.Column<int>(type: "int", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AutorGitHub = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaCierre = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RepoId = table.Column<int>(type: "int", nullable: false),
-                    TareaId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NumeroPR = table.Column<int>(type: "integer", nullable: false),
+                    Titulo = table.Column<string>(type: "text", nullable: false),
+                    AutorGitHub = table.Column<string>(type: "text", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: false),
+                    Estado = table.Column<string>(type: "text", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    FechaCierre = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    RepoId = table.Column<int>(type: "integer", nullable: false),
+                    TareaId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {

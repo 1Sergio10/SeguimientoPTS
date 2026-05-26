@@ -1,3 +1,9 @@
+databases:
+  - name: pts-db
+    plan: free
+    databaseName: ptsdb
+    user: ptsuser
+
 services:
   - type: web
     name: pts-api
@@ -5,6 +11,7 @@ services:
     plan: free
     dockerfilePath: ./PTS.API/Dockerfile
     dockerContext: ./PTS.API
+    dockerCommand: sh -c "dotnet PTS.API.dll --urls http://0.0.0.0:$PORT"
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
@@ -15,14 +22,16 @@ services:
       - key: JWT__AUDIENCE
         value: PTS.CLIENT
       - key: ConnectionStrings__Default
-        sync: false
+        fromDatabase:
+          name: pts-db
+          property: connectionString
 
   - type: web
     name: pts-web
     runtime: static
     rootDir: .
     buildCommand: npm ci && npm run build
-    staticPublishPath: dist/pts-track
+    staticPublishPath: dist/pts-track/browser
     routes:
       - type: rewrite
         source: /*

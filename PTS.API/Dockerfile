@@ -12,4 +12,4 @@ WORKDIR /app
 
 COPY --from=build /app/publish ./
 
-ENTRYPOINT ["sh", "-c", "dotnet PTS.API.dll --urls http://0.0.0.0:${PORT}"]
+ENTRYPOINT ["dotnet", "PTS.API.dll"]

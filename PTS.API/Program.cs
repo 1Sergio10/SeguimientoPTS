@@ -18,7 +18,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddDbContext<PtsDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IGitHubService, GitHubService>();
@@ -89,6 +89,12 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PtsDbContext>();
+    db.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -96,13 +102,12 @@ if (app.Environment.IsDevelopment())
 
     using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<PtsDbContext>();
-    db.Database.Migrate();
 
     if (!db.Usuarios.Any())
     {
         var profesor = new Usuario
         {
-            Nombre = "Profesor Demo",
+            Nombre = "Profesor ",
             Email = "profesor@pts.local",
             Rol = Rol.PROFESOR,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345678")
@@ -110,7 +115,7 @@ if (app.Environment.IsDevelopment())
 
         var estudiante = new Usuario
         {
-            Nombre = "Estudiante Demo",
+            Nombre = "Estudiante ",
             Email = "estudiante@pts.local",
             Rol = Rol.ESTUDIANTE,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345678")
