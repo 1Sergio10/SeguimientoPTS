@@ -17,8 +17,23 @@ builder.Services.AddControllers()
     });
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddDbContext<PtsDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+var rawConnStr = builder.Configuration.GetConnectionString("Default")
+    ?? throw new InvalidOperationException("ConnectionStrings:Default faltante");
+
+// Render entrega la connection string en formato URL (postgresql://user:pass@host/db)
+// Npgsql necesita formato key=value
+string connStr = rawConnStr;
+if (rawConnStr.StartsWith("postgresql://") || rawConnStr.StartsWith("postgres://"))
+{
+    var uri = new Uri(rawConnStr);
+    var userInfo = uri.UserInfo.Split(':', 2);
+    connStr = $"Host={uri.Host};Port={(uri.Port > 0 ? uri.Port : 5432)};" +
+              $"Database={uri.AbsolutePath.TrimStart('/')};" +
+              $"Username={userInfo[0]};Password={Uri.UnescapeDataString(userInfo[1])};" +
+              $"SSL Mode=Require;Trust Server Certificate=true";
+}
+
+builder.Services.AddDbContext<PtsDbContext>(opt => opt.UseNpgsql(connStr));
 
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IGitHubService, GitHubService>();
