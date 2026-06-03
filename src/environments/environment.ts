@@ -12,7 +12,7 @@ function getApiUrl(): string {
     // En Render, si el frontend es pts-track.onrender.com y el backend es pts-api.onrender.com
     // Reemplazamos el hostname para apuntar al backend
     if (hostname.includes('onrender.com')) {
-      return 'https://pts-api.onrender.com/api';
+      return '/api';
     }
     
     // En desarrollo local, intenta /api (posible proxy)

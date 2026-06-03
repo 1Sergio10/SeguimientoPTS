@@ -1,0 +1,7 @@
+node_modules
+dist
+PTS.API/bin
+PTS.API/obj
+.git
+*.md
+node_modules.zip
