@@ -138,31 +138,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<PtsDbContext>();
-
-    if (!db.Usuarios.Any())
-    {
-        var profesor = new Usuario
-        {
-            Nombre = "Profesor ",
-            Email = "profesor@pts.local",
-            Rol = Rol.PROFESOR,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345678")
-        };
-
-        var estudiante = new Usuario
-        {
-            Nombre = "Estudiante ",
-            Email = "estudiante@pts.local",
-            Rol = Rol.ESTUDIANTE,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("12345678")
-        };
-
-        db.Usuarios.AddRange(profesor, estudiante);
-        db.SaveChanges();
-    }
 }
 
 app.UseDefaultFiles();

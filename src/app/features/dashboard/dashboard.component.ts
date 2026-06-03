@@ -48,7 +48,7 @@ import { DashboardProfesorDto, DashboardEstudianteDto } from '../../core/models'
             <div class="page-header"><h2 class="page-title">Dashboard</h2></div>
             <div class="card" style="text-align:center;padding:32px">
               <div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px">Aún no tienes una clase creada.</div>
-              <a routerLink="/clase" class="btn btn-primary">Crear clase →</a>
+              <a routerLink="/grupos" class="btn btn-primary">Crear clase →</a>
             </div>
           </div>
         } @else {

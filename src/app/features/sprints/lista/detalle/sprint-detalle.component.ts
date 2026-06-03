@@ -188,7 +188,7 @@ export class SprintDetalleComponent implements OnInit {
   form        = { titulo: '', descripcion: '', puntos: 3 };
   formSprintEdit = { numero: 1, meta: '', fechaInicio: '', fechaFin: '' };
   tareaEditId: number | null = null;
-  formTareaEdit = { titulo: '', descripcion: '', puntos: 3 };
+  formTareaEdit = { titulo: '', descripcion: '', puntos: 3, asignadoAId: undefined as number | undefined };
 
   // Declarar auth ANTES de usarlo en las propiedades
   constructor(
@@ -275,7 +275,8 @@ export class SprintDetalleComponent implements OnInit {
     this.formTareaEdit = {
       titulo: t.titulo,
       descripcion: t.descripcion,
-      puntos: t.puntos
+      puntos: t.puntos,
+      asignadoAId: t.asignadoA?.id
     };
     this.mostrarEditarTarea = true;
   }
@@ -288,7 +289,7 @@ export class SprintDetalleComponent implements OnInit {
       descripcion: this.formTareaEdit.descripcion,
       puntos: this.formTareaEdit.puntos,
       sprintId: this.id,
-      asignadoAId: undefined
+      asignadoAId: this.formTareaEdit.asignadoAId
     }).subscribe(updated => {
       this.tareas.update(ts => ts.map(t => t.id === updated.id ? updated : t));
       this.mostrarEditarTarea = false;
