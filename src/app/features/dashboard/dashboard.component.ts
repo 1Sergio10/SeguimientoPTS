@@ -89,9 +89,17 @@ import { DashboardProfesorDto, DashboardEstudianteDto } from '../../core/models'
             </div>
           </div>
         </div>
-      } @else {
-        <div class="loading">Cargando dashboard...</div>
-      }
+      } @else if (sinProyecto()) {
+          <div class="page">
+            <div class="page-header"><h2 class="page-title">Mi proyecto</h2></div>
+            <div class="card" style="text-align:center;padding:32px">
+              <div style="font-size:14px;color:var(--text-secondary);margin-bottom:8px">Aún no estás asignado a un grupo.</div>
+              <div style="font-size:12px;color:var(--text-secondary)">Contacta a tu profesor para que te agregue a un grupo.</div>
+            </div>
+          </div>
+        } @else {
+          <div class="loading">Cargando dashboard...</div>
+        }
     }
   `,
   styles: [`
