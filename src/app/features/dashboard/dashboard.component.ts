@@ -10,43 +10,54 @@ import { DashboardProfesorDto, DashboardEstudianteDto } from '../../core/models'
   imports: [RouterLink],
   providers: [DashboardService],
   template: `
-    @if (esProfesor()) {
+ 
       <!-- ── DASHBOARD PROFESOR ── -->
-      @if (datosProfesor()) {
-        <div class="page">
-          <div class="page-header">
-            <div>
-              <h2 class="page-title">Dashboard</h2>
-              <div class="page-sub">{{ datosProfesor()!.clase.nombre }} · {{ datosProfesor()!.clase.semestre }}</div>
-            </div>
-            <a routerLink="/sprints" class="btn btn-primary">Ver Sprints →</a>
-          </div>
-
-          <div class="metrics">
-            <div class="mc"><div class="mc-label">Grupos</div><div class="mc-val">{{ datosProfesor()!.totalGrupos }}</div></div>
-            <div class="mc"><div class="mc-label">En revisión</div><div class="mc-val">{{ datosProfesor()!.tareasEnRevision }}</div></div>
-            <div class="mc"><div class="mc-label">Avance general</div><div class="mc-val">{{ datosProfesor()!.avanceGeneral }}%</div></div>
-          </div>
-
-          <div class="card">
-            <div class="card-title">Avance por grupo</div>
-            @for (g of datosProfesor()!.grupos; track g.grupoId) {
-              <div class="prog-row">
-                <div class="prog-label">{{ g.nombreGrupo }}</div>
-                <div class="prog-bar"><div class="prog-fill" [style.width.%]="g.avancePorcentaje"></div></div>
-                <div class="prog-pct">{{ g.avancePorcentaje }}%</div>
-                <span class="badge" [class]="'badge-' + g.estado.toLowerCase().replace('_','-')">
-                  {{ g.estado === 'AL_DIA' ? 'Al día' : g.estado === 'EN_RIESGO' ? 'En riesgo' : 'Retrasado' }}
-                </span>
+      @if (esProfesor()) {
+        @if (datosProfesor()) {
+          <div class="page">
+            <div class="page-header">
+              <div>
+                <h2 class="page-title">Dashboard</h2>
+                <div class="page-sub">{{ datosProfesor()!.clase.nombre }} · {{ datosProfesor()!.clase.semestre }}</div>
               </div>
-            }
+              <a routerLink="/sprints" class="btn btn-primary">Ver Sprints →</a>
+            </div>
+
+            <div class="metrics">
+              <div class="mc"><div class="mc-label">Grupos</div><div class="mc-val">{{ datosProfesor()!.totalGrupos }}</div></div>
+              <div class="mc"><div class="mc-label">En revisión</div><div class="mc-val">{{ datosProfesor()!.tareasEnRevision }}</div></div>
+              <div class="mc"><div class="mc-label">Avance general</div><div class="mc-val">{{ datosProfesor()!.avanceGeneral }}%</div></div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Avance por grupo</div>
+              @for (g of datosProfesor()!.grupos; track g.grupoId) {
+                <div class="prog-row">
+                  <div class="prog-label">{{ g.nombreGrupo }}</div>
+                  <div class="prog-bar"><div class="prog-fill" [style.width.%]="g.avancePorcentaje"></div></div>
+                  <div class="prog-pct">{{ g.avancePorcentaje }}%</div>
+                  <span class="badge" [class]="'badge-' + g.estado.toLowerCase().replace('_','-')">
+                    {{ g.estado === 'AL_DIA' ? 'Al día' : g.estado === 'EN_RIESGO' ? 'En riesgo' : 'Retrasado' }}
+                  </span>
+                </div>
+              }
+            </div>
           </div>
-        </div>
-      } @else {
-        <div class="loading">Cargando dashboard...</div>
+        } @else if (sinClase()) {
+          <div class="page">
+            <div class="page-header"><h2 class="page-title">Dashboard</h2></div>
+            <div class="card" style="text-align:center;padding:32px">
+              <div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px">Aún no tienes una clase creada.</div>
+              <a routerLink="/clase" class="btn btn-primary">Crear clase →</a>
+            </div>
+          </div>
+        } @else {
+          <div class="loading">Cargando dashboard...</div>
+        }
       }
-    } @else {
+
       <!-- ── DASHBOARD ESTUDIANTE ── -->
+      @if (!esProfesor()) {
       @if (datosEstudiante()) {
         <div class="page">
           <div class="page-header">
@@ -106,14 +117,22 @@ export class DashboardComponent implements OnInit {
   esProfesor() { return this.auth.esProfesor(); }
   datosProfesor     = signal<DashboardProfesorDto | null>(null);
   datosEstudiante   = signal<DashboardEstudianteDto | null>(null);
+  sinClase    = signal(false);
+  sinProyecto = signal(false);
 
   constructor(private auth: AuthService, private dashboard: DashboardService) {}
 
   ngOnInit() {
     if (this.esProfesor()) {
-      this.dashboard.resumenProfesor().subscribe(d => this.datosProfesor.set(d));
+      this.dashboard.resumenProfesor().subscribe({
+        next: d => this.datosProfesor.set(d),
+        error: () => this.sinClase.set(true)
+      });
     } else {
-      this.dashboard.resumenEstudiante().subscribe(d => this.datosEstudiante.set(d));
+      this.dashboard.resumenEstudiante().subscribe({
+        next: d => this.datosEstudiante.set(d),
+        error: () => this.sinProyecto.set(true)
+      });
     }
   }
 }
